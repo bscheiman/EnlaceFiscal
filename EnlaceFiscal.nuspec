@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+ <package>
+   <metadata>
+     <id>EnlaceFiscal</id>
+     <version>$version$</version>
+     <authors>Boris Scheiman</authors>
+     <projectUrl>https://github.com/bscheiman/EnlaceFiscal</projectUrl>
+     <requireLicenseAcceptance>false</requireLicenseAcceptance>
+     <description>Libreria para usar el sistema de facturación digital de EnlaceFiscal</description>
+     <language>en-US</language>
+     <tags>boris scheiman bscheiman EnlaceFiscal enlace fiscal factura cfdi xml</tags>
+   </metadata>
+   
+   <files>
+     <file src="bin\Release\EnlaceFiscal.dll" target="lib\MonoAndroid\EnlaceFiscal.dll" />
+     <file src="bin\Release\EnlaceFiscal.dll" target="lib\MonoTouch\EnlaceFiscal.dll" />
+     <file src="bin\Release\EnlaceFiscal.dll" target="lib\Xamarin.iOS10\EnlaceFiscal.dll" />
+     <file src="bin\Release\EnlaceFiscal.dll" target="lib\portable-net45+win+wp8+wp81+win8\EnlaceFiscal.dll" />
+   </files>
+</package>

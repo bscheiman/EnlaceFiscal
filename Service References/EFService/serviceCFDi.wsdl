@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:tns="http://api.enlacefiscal.namespace" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" targetNamespace="http://api.enlacefiscal.namespace" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <xs:schema elementFormDefault="qualified" targetNamespace="http://api.enlacefiscal.namespace" />
+  </wsdl:types>
+  <wsdl:message name="generarCFDiRequest">
+    <wsdl:part name="generarFolio" type="xs:string" />
+  </wsdl:message>
+  <wsdl:message name="generarCFDiResponse">
+    <wsdl:part name="generarResult" type="xs:string" />
+  </wsdl:message>
+  <wsdl:message name="informacionCFDiRequest">
+    <wsdl:part name="infoFolio" type="xs:string" />
+  </wsdl:message>
+  <wsdl:message name="informacionCFDiResponse">
+    <wsdl:part name="infoResult" type="xs:string" />
+  </wsdl:message>
+  <wsdl:message name="cancelarCFDiRequest">
+    <wsdl:part name="cancelarFolio" type="xs:string" />
+  </wsdl:message>
+  <wsdl:message name="cancelarCFDiResponse">
+    <wsdl:part name="cancelarResult" type="xs:string" />
+  </wsdl:message>
+  <wsdl:message name="obtenerSaldoRequest">
+    <wsdl:part name="saldoInput" type="xs:string" />
+  </wsdl:message>
+  <wsdl:message name="obtenerSaldoResponse">
+    <wsdl:part name="saldoResult" type="xs:string" />
+  </wsdl:message>
+  <wsdl:message name="solicitarXMLRequest">
+    <wsdl:part name="solicitudFolio" type="xs:string" />
+  </wsdl:message>
+  <wsdl:message name="solicitarXMLResponse">
+    <wsdl:part name="solicitudResult" type="xs:string" />
+  </wsdl:message>
+  <wsdl:message name="probarConexionRequest">
+    <wsdl:part name="probarConexion" type="xs:string" />
+  </wsdl:message>
+  <wsdl:message name="probarConexionResponse">
+    <wsdl:part name="probarConexionResult" type="xs:string" />
+  </wsdl:message>
+  <wsdl:message name="solicitarQRRequest">
+    <wsdl:part name="QRsolicitud" type="xs:string" />
+  </wsdl:message>
+  <wsdl:message name="solicitarQRResponse">
+    <wsdl:part name="QRsolicitudResult" type="xs:string" />
+  </wsdl:message>
+  <wsdl:message name="enviarCorreoRequest">
+    <wsdl:part name="enviarCorreosolicitud" type="xs:string" />
+  </wsdl:message>
+  <wsdl:message name="enviarCorreoResponse">
+    <wsdl:part name="enviarCorreosolicitudResult" type="xs:string" />
+  </wsdl:message>
+  <wsdl:portType name="wsAPIxmlSOAP">
+    <wsdl:operation name="generarCFDi">
+      <wsdl:input message="tns:generarCFDiRequest" />
+      <wsdl:output message="tns:generarCFDiResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="informacionCFDi">
+      <wsdl:input message="tns:informacionCFDiRequest" />
+      <wsdl:output message="tns:informacionCFDiResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="cancelarCFDi">
+      <wsdl:input message="tns:cancelarCFDiRequest" />
+      <wsdl:output message="tns:cancelarCFDiResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="obtenerSaldo">
+      <wsdl:input message="tns:obtenerSaldoRequest" />
+      <wsdl:output message="tns:obtenerSaldoResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="solicitarXML">
+      <wsdl:input message="tns:solicitarXMLRequest" />
+      <wsdl:output message="tns:solicitarXMLResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="probarConexion">
+      <wsdl:input message="tns:probarConexionRequest" />
+      <wsdl:output message="tns:probarConexionResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="solicitarQR">
+      <wsdl:input message="tns:solicitarQRRequest" />
+      <wsdl:output message="tns:solicitarQRResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="enviarCorreo">
+      <wsdl:input message="tns:enviarCorreoRequest" />
+      <wsdl:output message="tns:enviarCorreoResponse" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="wsAPIXMLBinding" type="tns:wsAPIxmlSOAP">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="generarCFDi">
+      <soap:operation soapAction="/generarCFD" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="informacionCFDi">
+      <soap:operation soapAction="/informacionCFD" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="cancelarCFDi">
+      <soap:operation soapAction="/cancelarCFD" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="obtenerSaldo">
+      <soap:operation soapAction="/obtenerSaldo" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="solicitarXML">
+      <soap:operation soapAction="/solicitarXML" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="probarConexion">
+      <soap:operation soapAction="/probarConexion" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="solicitarQR">
+      <soap:operation soapAction="/solicitarQR" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="enviarCorreo">
+      <soap:operation soapAction="/enviarCorreo" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="EFService">
+    <wsdl:port name="EFPort" binding="tns:wsAPIXMLBinding">
+      <soap:address location="https://api.enlacefiscal.com/soap/serviceCFDi.php" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>
