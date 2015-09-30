@@ -22,10 +22,9 @@ namespace EnlaceFiscal {
         }
 
         public void CancelInvoice(string id, string reason) {
-            var tempStr =
-                string.Format(
-                              @"<?xml version=""1.0"" encoding=""UTF-8""?><Solicitud xsi:schemaLocation=""https://esquemas.enlacefiscal.com/EF/API_CFDi/Solicitudes https://esquemas.enlacefiscal.com/EF/API_CFDi/Solicitud.xsd""  xmlns=""https://esquemas.enlacefiscal.com/EF/API_CFDi/Solicitudes"" xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance""><rfc>SERB860630BF2</rfc><accion>cancelarCFDi</accion><modo>produccion</modo><CFDi><serie>A</serie><folio>{0}</folio><justificacion>{1}</justificacion></CFDi></Solicitud>",
-                    id, reason);
+            string tempStr =
+                $@"<?xml version=""1.0"" encoding=""UTF-8""?><Solicitud xsi:schemaLocation=""https://esquemas.enlacefiscal.com/EF/API_CFDi/Solicitudes https://esquemas.enlacefiscal.com/EF/API_CFDi/Solicitud.xsd""  xmlns=""https://esquemas.enlacefiscal.com/EF/API_CFDi/Solicitudes"" xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance""><rfc>SERB860630BF2</rfc><accion>cancelarCFDi</accion><modo>produccion</modo><CFDi><serie>A</serie><folio>{
+                    id}</folio><justificacion>{reason}</justificacion></CFDi></Solicitud>";
 
             // TODO
         }
@@ -40,20 +39,19 @@ namespace EnlaceFiscal {
 
         internal async Task<InvoiceResult> Send(XDocument invoice) {
             using (var client = new HttpClient()) {
-                var auth = Convert.ToBase64String(Encoding.UTF8.GetBytes(string.Format("{0}:{1}", Username, Password)));
-                var xml = invoice.ToString(SaveOptions.DisableFormatting);
+                string auth = Convert.ToBase64String(Encoding.UTF8.GetBytes($"{Username}:{Password}"));
+                string xml = invoice.ToString(SaveOptions.DisableFormatting);
 
                 client.DefaultRequestHeaders.Add("SOAPAction", "/generarCFDi");
                 client.DefaultRequestHeaders.Add("Authorization", "Basic " + auth);
 
-                var str =
-                    string.Format(
-                                  @"<?xml version=""1.0"" encoding=""UTF-8"" standalone=""no""?><SOAP-ENV:Envelope xmlns:SOAP-ENV=""http://schemas.xmlsoap.org/soap/envelope/"" xmlns:wsdl=""http://schemas.xmlsoap.org/wsdl/"" xmlns:soap=""http://schemas.xmlsoap.org/wsdl/soap/"" xmlns:http=""http://schemas.xmlsoap.org/wsdl/http/"" xmlns:xs=""http://www.w3.org/2001/XMLSchema"" xmlns:soapenc=""http://schemas.xmlsoap.org/soap/encoding/"" xmlns:mime=""http://schemas.xmlsoap.org/wsdl/mime/"" xmlns:tns=""http://api.enlacefiscal.namespace"" xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema"" ><SOAP-ENV:Body><generarFolio xmlns=""http://api.enlacefiscal.namespace"">{0}</generarFolio></SOAP-ENV:Body></SOAP-ENV:Envelope>",
-                        WebUtility.HtmlEncode(xml));
+                string str =
+                    $@"<?xml version=""1.0"" encoding=""UTF-8"" standalone=""no""?><SOAP-ENV:Envelope xmlns:SOAP-ENV=""http://schemas.xmlsoap.org/soap/envelope/"" xmlns:wsdl=""http://schemas.xmlsoap.org/wsdl/"" xmlns:soap=""http://schemas.xmlsoap.org/wsdl/soap/"" xmlns:http=""http://schemas.xmlsoap.org/wsdl/http/"" xmlns:xs=""http://www.w3.org/2001/XMLSchema"" xmlns:soapenc=""http://schemas.xmlsoap.org/soap/encoding/"" xmlns:mime=""http://schemas.xmlsoap.org/wsdl/mime/"" xmlns:tns=""http://api.enlacefiscal.namespace"" xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema"" ><SOAP-ENV:Body><generarFolio xmlns=""http://api.enlacefiscal.namespace"">{
+                        WebUtility.HtmlEncode(xml)}</generarFolio></SOAP-ENV:Body></SOAP-ENV:Envelope>";
                 var content = new StringContent(str, Encoding.UTF8, "text/xml");
 
                 using (var response = await client.PostAsync("https://api.enlacefiscal.com/soap/serviceCFDi.php", content)) {
-                    var soapResponse = await response.Content.ReadAsStringAsync();
+                    string soapResponse = await response.Content.ReadAsStringAsync();
                     var soap = XDocument.Parse(soapResponse);
                     XNamespace ns = "http://schemas.xmlsoap.org/soap/envelope/";
 

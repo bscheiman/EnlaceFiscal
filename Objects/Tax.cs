@@ -16,13 +16,26 @@ namespace EnlaceFiscal.Objects {
         }
 
         public XElement[] ToXml() {
-            return new[] {
-                XmlHelper.CreateElement("totalImpuestosRetenidos",
-                    Items.Where(a => a.TaxType == "ISR").Sum(a => a.TotalTax).ToString("0.000000").RemoveTrailingZeroes()),
-                XmlHelper.CreateElement("totalImpuestosTrasladados",
-                    Items.Where(a => a.TaxType == "IVA").Sum(a => a.TotalTax).ToString("0.000000").RemoveTrailingZeroes()),
-                XmlHelper.CreateElement("Retenciones", GetTaxes("Retencion", "ISR")), XmlHelper.CreateElement("Traslados", GetTaxes("Traslado", "IVA"))
-            };
+            var list = new List<XElement>();
+
+            decimal totalIsr = Items.Where(a => a.TaxType == "ISR").Sum(a => a.TotalTax);
+            decimal totalIva = Items.Where(a => a.TaxType == "IVA").Sum(a => a.TotalTax);
+
+            if (totalIsr > 0)
+                list.Add(XmlHelper.CreateElement("totalImpuestosRetenidos", totalIsr.ToString("0.000000").RemoveTrailingZeroes()));
+            if (totalIva > 0)
+                list.Add(XmlHelper.CreateElement("totalImpuestosTrasladados", totalIva.ToString("0.000000").RemoveTrailingZeroes()));
+
+            var isr = GetTaxes("Retencion", "ISR");
+            var iva = GetTaxes("Traslado", "IVA");
+
+            if (isr != null && isr.Any())
+                list.Add(XmlHelper.CreateElement("Retenciones", isr));
+
+            if (iva != null && iva.Any())
+                list.Add(XmlHelper.CreateElement("Traslados", iva));
+
+            return list.ToArray();
         }
 
         private IEnumerable<XElement[]> GetTaxes(string name, string tax) {
