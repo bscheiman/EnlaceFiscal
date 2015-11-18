@@ -1,10 +1,12 @@
 ﻿#region
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using EnlaceFiscal.Extensions;
+using NodaTime;
 
 #endregion
 
@@ -61,15 +63,15 @@ namespace EnlaceFiscal.Objects {
         }
 
         public XDocument ToXml() {
-            var requiredObjects = new object[] {
-                PaymentInformation, Items, Receiver, Series, Id
-            };
+            var requiredObjects = new object[] { PaymentInformation, Items, Receiver, Series, Id };
 
             if (requiredObjects.Any(x => x == null))
                 throw new ArgumentException("Faltan algunos objetos en la factura");
 
             if (Items.Count == 0)
                 throw new ArgumentException("No hay articulos que facturar");
+
+            var date = SystemClock.Instance.Now.InZone(DateTimeZoneProviders.Tzdb["America/Mexico_City"]) - Duration.FromMinutes(10);
 
             var root =
                 XDocument.Parse(
@@ -79,7 +81,7 @@ namespace EnlaceFiscal.Objects {
             root.AddWithDefaultNamespace("versionEF", "5.0");
             root.AddWithDefaultNamespace("serie", Series);
             root.AddWithDefaultNamespace("folioInterno", Id);
-            root.AddWithDefaultNamespace("fechaEmision", DateTime.UtcNow.AddHours(-5).ToString("yyyy-MM-ddThh:mm:ss"));
+            root.AddWithDefaultNamespace("fechaEmision", date.ToString("yyyy-MM-ddTHH:mm:ss", CultureInfo.InvariantCulture));
             root.AddWithDefaultNamespace("subTotal", Subtotal.ToString("0.000000").RemoveTrailingZeroes());
             root.AddWithDefaultNamespace("total", Total.ToString("0.000000").RemoveTrailingZeroes());
             root.AddWithDefaultNamespace("numeroDecimales", 2);
@@ -132,8 +134,8 @@ namespace EnlaceFiscal.Objects {
             return this;
         }
 
-        public Invoice WithReceiver(string socialName, string address, string extNumber, string intNumber, string neighborhood, string locality,
-                                    string county, string state, int zipCode) {
+        public Invoice WithReceiver(string socialName, string address, string extNumber, string intNumber, string neighborhood,
+                                    string locality, string county, string state, int zipCode) {
             Receiver = new Receiver(Target, socialName, address, extNumber, intNumber, neighborhood, locality, county, state, zipCode);
 
             return this;
